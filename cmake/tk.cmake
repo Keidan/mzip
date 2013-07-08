@@ -13,7 +13,7 @@ add_custom_target(libtk_clean-all
   COMMAND make -C lib/tk clean-all
 )
 
-add_dependencies(bns libtk)
+add_dependencies(unzip libtk)
 add_dependencies(clean-all libtk_clean-all)
 set(extra_clean 
   lib/tk/lib/${DISTRIBUTION}/${CMAKE_BUILD_TYPE}/libtk.so 

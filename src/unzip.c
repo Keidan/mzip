@@ -21,6 +21,7 @@
  *******************************************************************************
  */
 #include <getopt.h>
+#include <signal.h>
 #include <tk/text/string.h>
 #include <tk/sys/uz.h>
 #include <sys/stat.h>
@@ -49,12 +50,14 @@ void usage(int err) {
   exit(err);
 }
 
-void unzip_file_content)(uz_t uz, struct uzentry_s entry) {
-  if(entry.isdir)
+void unzip_file_content(uz_t uz, struct uzentry_s entry) {
+  if(entry.isdir) {
+    printf("Create directory: %s\n", entry.name);
     mkdir(entry.name, 0777);
-  else {
+  } else {
+    printf("Create file: %s\n", entry.name);
     FILE* f = fopen(entry.name, "w+");
-    fwrite(entry.content + offset, 1, entry.info.uncompressed_size, f);
+    fwrite(entry.content, 1, entry.info.uncompressed_size, f);
     fclose(f);
   }
 }
@@ -76,7 +79,7 @@ int main(int argc, char** argv) {
 	strncpy(filename, optarg, FILENAME_MAX);
 	break;
       default: /* '?' */
-	blogger("Unknown option '%c'\n", opt);
+	fprintf(stderr, "Unknown option '%c'\n", opt);
 	usage(EXIT_FAILURE);
 	break;
     }
@@ -84,7 +87,7 @@ int main(int argc, char** argv) {
 
   uz = uz_open(filename);
   if(uz_get_contents(uz, unzip_file_content))
-    frpintf(stderr, "Unable to get the zip fie content\n");
+    fprintf(stderr, "Unable to get the zip fie content\n");
 
   return EXIT_SUCCESS;
 }

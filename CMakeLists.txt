@@ -28,9 +28,6 @@ add_custom_target(clean-all
 add_custom_target(doxygen
    COMMAND ${CMAKE_COMMAND} -P cmake/doxygen.cmake
 )
-# The version number.
-set (BNS_VERSION_MAJOR 3)
-set (BNS_VERSION_MINOR 1)
 
 # To produce x86_64 binaries
 if("${CMAKE_BUILD_TYPE}" MATCHES "x86_64")
@@ -68,12 +65,12 @@ else()
 endif()
 
 
-set(BNS_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin/${DISTRIBUTION}/${CMAKE_BUILD_TYPE})
-file(MAKE_DIRECTORY ${BNS_BINARY_DIR})
-set(EXECUTABLE_OUTPUT_PATH ${BNS_BINARY_DIR})
+set(UNZIP_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin/${DISTRIBUTION}/${CMAKE_BUILD_TYPE})
+file(MAKE_DIRECTORY ${UNZIP_BINARY_DIR})
+set(EXECUTABLE_OUTPUT_PATH ${UNZIP_BINARY_DIR})
 link_directories("${CMAKE_SOURCE_DIR}/lib/tk/lib/${DISTRIBUTION}/${CMAKE_BUILD_TYPE}")
 
-add_subdirectory(${BNS_SRC_DIR})
+add_subdirectory(${UNZIP_SRC_DIR})
 
 # add TK env
 include(cmake/tk.cmake)
