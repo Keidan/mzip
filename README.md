@@ -1,7 +1,7 @@
-bns
+MZip
 ===
 
-(GPL) Simple unzip based on the source code of zlib-contrib.
+(GPL) Simple mzip based on the source code of zlib-contrib.
 
 This software is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY.
 
@@ -14,8 +14,8 @@ download the software :
 	mkdir devel
 	cd devel
 	
-	git clone git://github.com/Keidan/unzip.git
-	cd unzip
+	git clone git://github.com/Keidan/mzip.git
+	cd mzip
 	git submodule init
 	git submodule update
 	cmake -DCMAKE_BUILD_TYPE=[x86|x86_64|xscale] -DDISTRIBUTION=[debug|release] .
@@ -28,7 +28,7 @@ License (like GPL)
 	You can:
 		- Redistribute the sources code and binaries.
 		- Modify the Sources code.
-		- Use a part of the sources (less than 50%) in an other software, just write somewhere "unzip is great" visible by the user (on your product or on your website with a link to my page).
+		- Use a part of the sources (less than 50%) in an other software, just write somewhere "mzip is great" visible by the user (on your product or on your website with a link to my page).
 		- Redistribute the modification only if you want.
 		- Send me the bug-fix (it could be great).
 		- Pay me a beer or some other things.
