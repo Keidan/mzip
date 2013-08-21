@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 
-project(unzip C)
+project(mzip C)
 
 if("${DISTRIBUTION}" MATCHES "debug")
   set(DISTRIBUTION "debug")
@@ -13,8 +13,8 @@ endif()
 message("-- Target mode: ${DISTRIBUTION}")
 
 # update directories
-set(UNZIP_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
-set(UNZIP_SRC_DIR ${CMAKE_SOURCE_DIR}/src)
+set(MZIP_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
+set(MZIP_SRC_DIR ${CMAKE_SOURCE_DIR}/src)
 set(TK_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/lib/tk/include)
 
 # global config
@@ -28,6 +28,9 @@ add_custom_target(clean-all
 add_custom_target(doxygen
    COMMAND ${CMAKE_COMMAND} -P cmake/doxygen.cmake
 )
+# The version number.
+set (MZIP_VERSION_MAJOR 1)
+set (MZIP_VERSION_MINOR 2)
 
 # To produce x86_64 binaries
 if("${CMAKE_BUILD_TYPE}" MATCHES "x86_64")
@@ -47,8 +50,8 @@ elseif("${CMAKE_BUILD_TYPE}" MATCHES "xscale")
   set(CMAKE_SYSTEM_VERSION 1)
 
   set(CMAKE_X_HOME /usr/local/arm-linux-4.4.2-v4)
-  # specify the cross compiler
-  set(CMAKE_C_COMPILER ${CMAKE_X_HOME}/bin/xscale-none-linux-gnueabi-gcc)
+  # specify the cross commzipler
+  set(CMAKE_C_COMMZIPLER ${CMAKE_X_HOME}/bin/xscale-none-linux-gnueabi-gcc)
    
   # where is the target environment 
   set(CMAKE_FIND_ROOT_PATH  ${CMAKE_X_HOME})
@@ -65,12 +68,12 @@ else()
 endif()
 
 
-set(UNZIP_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin/${DISTRIBUTION}/${CMAKE_BUILD_TYPE})
-file(MAKE_DIRECTORY ${UNZIP_BINARY_DIR})
-set(EXECUTABLE_OUTPUT_PATH ${UNZIP_BINARY_DIR})
+set(MZIP_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin/${DISTRIBUTION}/${CMAKE_BUILD_TYPE})
+file(MAKE_DIRECTORY ${MZIP_BINARY_DIR})
+set(EXECUTABLE_OUTPUT_PATH ${MZIP_BINARY_DIR})
 link_directories("${CMAKE_SOURCE_DIR}/lib/tk/lib/${DISTRIBUTION}/${CMAKE_BUILD_TYPE}")
 
-add_subdirectory(${UNZIP_SRC_DIR})
+add_subdirectory(${MZIP_SRC_DIR})
 
 # add TK env
 include(cmake/tk.cmake)
