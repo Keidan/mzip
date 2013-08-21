@@ -76,6 +76,7 @@ int main(int argc, char** argv) {
   ssig_add_signal(SIGTERM, mzip_signals);
 
   fprintf(stdout, "Mzip is a FREE software.\nCopyright 2013-2013 By kei\nLicense GPL.\n\n");
+  fprintf(stdout, "MyZIP is a FREE software v%d.%d.\nCopyright 2011-2013 By kei\nLicense GPL.\n", MZIP_VERSION_MAJOR, MZIP_VERSION_MINOR);
 
   bzero(filename, FILENAME_MAX);
 
