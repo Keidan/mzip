@@ -29,8 +29,8 @@ add_custom_target(doxygen
    COMMAND ${CMAKE_COMMAND} -P cmake/doxygen.cmake
 )
 # The version number.
-set (MZIP_VERSION_MAJOR 1)
-set (MZIP_VERSION_MINOR 2)
+set (MZIP_VERSION_MAJOR 2)
+set (MZIP_VERSION_MINOR 0)
 
 # To produce x86_64 binaries
 if("${CMAKE_BUILD_TYPE}" MATCHES "x86_64")
@@ -51,7 +51,7 @@ elseif("${CMAKE_BUILD_TYPE}" MATCHES "xscale")
 
   set(CMAKE_X_HOME /usr/local/arm-linux-4.4.2-v4)
   # specify the cross commzipler
-  set(CMAKE_C_COMMZIPLER ${CMAKE_X_HOME}/bin/xscale-none-linux-gnueabi-gcc)
+  set(CMAKE_C_COMPILER ${CMAKE_X_HOME}/bin/xscale-none-linux-gnueabi-gcc)
    
   # where is the target environment 
   set(CMAKE_FIND_ROOT_PATH  ${CMAKE_X_HOME})
@@ -71,7 +71,12 @@ endif()
 set(MZIP_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin/${DISTRIBUTION}/${CMAKE_BUILD_TYPE})
 file(MAKE_DIRECTORY ${MZIP_BINARY_DIR})
 set(EXECUTABLE_OUTPUT_PATH ${MZIP_BINARY_DIR})
-link_directories("${CMAKE_SOURCE_DIR}/lib/tk/lib/${DISTRIBUTION}/${CMAKE_BUILD_TYPE}")
+set(TK_LIB_DIR "${CMAKE_SOURCE_DIR}/lib/tk/lib/${DISTRIBUTION}/${CMAKE_BUILD_TYPE}")
+link_directories("${TK_LIB_DIR}")
+
+add_custom_target(package
+   COMMAND ${CMAKE_COMMAND} -DLIBRARIES="${TK_LIB_DIR}" -DBINARIES="${EXECUTABLE_OUTPUT_PATH}" -DNAME="mzip-${DISTRIBUTION}-${CMAKE_BUILD_TYPE}" -P cmake/package.cmake
+)
 
 add_subdirectory(${MZIP_SRC_DIR})
 
