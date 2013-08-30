@@ -28,7 +28,7 @@
 #include <tk/sys/z.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-
+#include <tk/sys/stools.h>
 
 static z_t z = NULL;
 
@@ -70,14 +70,15 @@ void usage(int err) {
 }
 
 void mzip_uncompress_callback(z_t z, struct zentry_s entry) {
-  if(entry.isdir) {
-    printf("Create directory: %s\n", entry.name);
-    mkdir(entry.name, 0777);
-  } else {
-    printf("Create file: %s\n", entry.name);
+  file_name_t dir;
+  file_dirname(entry.name, dir);
+  if(!file_is_dir(dir)) file_mkdirs(dir);
+  if(!entry.isdir) {
+    char ssize[STOOLS_MAX_SSIZE];
+    stools_size_to_string(entry.info.uncompressed_size, ssize);
+    printf("Create file: %s (%s)\n", entry.name, ssize);
     FILE* f = fopen(entry.name, "w+");
     if(!f) return;
-    printf("Create file: %p\n", f);
     if(entry.info.uncompressed_size)
       fwrite(entry.content, 1, entry.info.uncompressed_size, f);
     fclose(f);
