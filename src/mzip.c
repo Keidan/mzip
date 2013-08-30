@@ -76,8 +76,10 @@ void mzip_uncompress_callback(z_t z, struct zentry_s entry) {
   } else {
     printf("Create file: %s\n", entry.name);
     FILE* f = fopen(entry.name, "w+");
+    if(!f) return;
     printf("Create file: %p\n", f);
-    fwrite(entry.content, 1, entry.info.uncompressed_size, f);
+    if(entry.info.uncompressed_size)
+      fwrite(entry.content, 1, entry.info.uncompressed_size, f);
     fclose(f);
   }
 }
@@ -132,6 +134,10 @@ int main(int argc, char** argv) {
 	break;
     }
   }
+  if(!strlen(filename)) {
+    logger(LOG_ERR, "Invalid zip file name!\n");
+    usage(EXIT_FAILURE);
+  }
   if(!extract && !create) {
     logger(LOG_ERR, "Please set an action mode!\n");
     usage(EXIT_FAILURE);
@@ -151,12 +157,12 @@ int main(int argc, char** argv) {
       return EXIT_FAILURE;
     }
   } else {
-    fifo_t files = fifo_new();
+    fifo_t files = fifo_new(1);
     if(file_list_dir(directory, files)) {
       logger(LOG_ERR, "Unable to get the file list of the directory %s\n", directory);
       return EXIT_FAILURE;
     }
-    if(z_compress(z, filename, password, level, append, exclude_path, files, 0)) {
+    if(z_compress(z, filename, password, level, append, exclude_path, files)) {
       fifo_delete(files);
       logger(LOG_ERR, "Unable to create the zip file %s\n", filename);
       return EXIT_FAILURE;
