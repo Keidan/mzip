@@ -23,12 +23,12 @@
 #include "mzip_config.h"
 #include <getopt.h>
 #include <signal.h>
-#include <tk/text/string.h>
-#include <tk/sys/ssig.h>
-#include <tk/sys/z.h>
+#include <tk/utils/string.h>
+#include <tk/sys/syssig.h>
+#include <tk/utils/z.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <tk/sys/stools.h>
+#include <tk/sys/systools.h>
 
 static z_t z = NULL;
 
@@ -74,8 +74,8 @@ void mzip_uncompress_callback(z_t z, struct zentry_s entry) {
   file_dirname(entry.name, dir);
   if(!file_is_dir(dir)) file_mkdirs(dir);
   if(!entry.isdir) {
-    char ssize[STOOLS_MAX_SSIZE];
-    stools_size_to_string(entry.info.uncompressed_size, ssize);
+    char ssize[SYSTOOLS_MAX_SSIZE];
+    systools_size_to_string(entry.info.uncompressed_size, ssize);
     printf("Create file: %s (%s)\n", entry.name, ssize);
     FILE* f = fopen(entry.name, "w+");
     if(!f) return;
@@ -90,9 +90,9 @@ int main(int argc, char** argv) {
   z_clevel_et level = Z_C_STORE;
   z_file_t filename, password, directory;
 
-  ssig_init(log_init_cast_user("mzip", LOG_PID|LOG_CONS|LOG_PERROR), mzip_cleanup);
-  ssig_add_signal(SIGINT, mzip_signals);
-  ssig_add_signal(SIGTERM, mzip_signals);
+  syssig_init(log_init_cast_user("mzip", LOG_PID|LOG_CONS|LOG_PERROR), mzip_cleanup);
+  syssig_add_signal(SIGINT, mzip_signals);
+  syssig_add_signal(SIGTERM, mzip_signals);
 
   fprintf(stdout, "MyZIP is a FREE software v%d.%d.\nCopyright 2011-2013 By kei\nLicense GPL.\n", MZIP_VERSION_MAJOR, MZIP_VERSION_MINOR);
 

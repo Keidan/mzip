@@ -25,6 +25,6 @@
 
   // the configured options and settings for MZIP
   #define MZIP_VERSION_MAJOR 2
-  #define MZIP_VERSION_MINOR 0
+  #define MZIP_VERSION_MINOR 1
 
 #endif /* __PSTATS_CONFIG_H__ */
